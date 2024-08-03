@@ -1,19 +1,22 @@
 from langchain import PromptTemplate, LLMChain
 from langchain.chat_models import ChatOpenAI
 import openai
+import os
 import re
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 from langchain_community.utilities import SQLDatabase
+from dotenv import load_dotenv
+load_dotenv()
 
 llm=ChatOpenAI( model="tiiuae/falcon-180B-chat",
-    api_key= "api71-api-224b86a6-8cf4-466e-a26b-293f99dd5979",
+    api_key= os.getenv("AI71_API_KEY"),
     base_url="https://api.ai71.ai/v1/",
     temperature=0,
     )
 
 #initialise OpenAI client
-openai.api_key ="sk-None-T1mUe8hmJ16OXlYhyniQT3BlbkFJG9p9p5dvp25fVO1mTvy6"
+openai.api_key =os.getenv("OPENAI_API_KEY")
 
 def clean_sql_query(query):
     # Find the first semicolon and truncate everything after it
@@ -26,7 +29,7 @@ def chatbot(user_input):
         # Initialize the ChatOpenAI instance
         llm = ChatOpenAI(
             model="tiiuae/falcon-180B-chat",
-            api_key="api71-api-224b86a6-8cf4-466e-a26b-293f99dd5979",
+            api_key=os.getenv("AI71_API_KEY"),
             base_url="https://api.ai71.ai/v1/",
             temperature=0,
         )

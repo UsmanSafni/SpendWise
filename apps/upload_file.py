@@ -20,8 +20,7 @@ import openai
 import re
 from langchain_community.utilities import SQLDatabase
 
-#initialise OpenAI client
-openai.api_key ="sk-None-T1mUe8hmJ16OXlYhyniQT3BlbkFJG9p9p5dvp25fVO1mTvy6"
+openai.api_key =os.getenv("OPENAI_API_KEY")
 
 #function to extract table from pdf
 

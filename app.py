@@ -4,11 +4,13 @@ from apps.upload_file import upload_file
 from apps.upload_file import generate_sqldb
 import openai
 from langchain_openai import ChatOpenAI
+import os
 
 
-openai.api_key ="sk-None-T1mUe8hmJ16OXlYhyniQT3BlbkFJG9p9p5dvp25fVO1mTvy6"
+#initialise OpenAI client
+openai.api_key =os.getenv("OPENAI_API_KEY")
 llm=ChatOpenAI( model="tiiuae/falcon-180B-chat",
-    api_key= "api71-api-224b86a6-8cf4-466e-a26b-293f99dd5979",
+    api_key= os.getenv("AI71_API_KEY"),
     base_url="https://api.ai71.ai/v1/",
     temperature=0,
     )
