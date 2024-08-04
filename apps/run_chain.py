@@ -15,8 +15,6 @@ llm=ChatOpenAI( model="tiiuae/falcon-180B-chat",
     temperature=0,
     )
 
-#initialise OpenAI client
-openai.api_key =os.getenv("OPENAI_API_KEY")
 
 def clean_sql_query(query):
     # Find the first semicolon and truncate everything after it
@@ -26,7 +24,7 @@ def clean_sql_query(query):
 
 def chatbot(user_input):
     try:
-        # Initialize the ChatOpenAI instance
+        # Initialize the ChatOpenAI
         llm = ChatOpenAI(
             model="tiiuae/falcon-180B-chat",
             api_key=os.getenv("AI71_API_KEY"),
@@ -37,17 +35,17 @@ def chatbot(user_input):
         # Define the template for the prompt
         template = """
         You are an intelligent MySQL chatbot and your name is SpendWise who will talk about expense history. Help the following question with a brilliant answer. Get the expense data from SQL database named 'expenses'.
-        Columns in 'expenses' table: 
+        Columns in 'expenses' table:
         CREATE TABLE expenses (
-	          "Merchant" TEXT, 
-	          "Location" TEXT, 
-	          "Date" TIMESTAMP, 
-	          "Amount" REAL, 
-	          "Category_freetext" TEXT, 
+	          "Merchant" TEXT,
+	          "Location" TEXT,
+	          "Date" TIMESTAMP,
+	          "Amount" REAL,
+	          "Category_freetext" TEXT,
 	          "Category" TEXT
-        ) Make SQL query according to question and the different categories are 'fitness', 'groceries', 'restaurants and cafes', 'healthcare', 'clothing', 'jewelry',
-        'transportation', 'phone and internet', 'miscellaneous', 'others', 'e-commerce', 'food delivery'. You should focus only on 'category' column present in the table for creating the SQL query. Don't choose any other columns to create the SQL query.
-        When the question is about summary report/summary of the transactions, provide the total expense resulted in each category in descending order. You are asked to give the exact SQL query in one command only in the answer. You don't need to explain about it.
+        ) Make SQL query according to question and the different categories are 'fitness', 'groceries', 'restaurants and cafes', 'healthcare', 'clothing', 'jewelry', 'transportation', 'phone and internet', 'miscellaneous', 'others', 'e-commerce', 'food delivery'. You should focus only on 'category' column present in the table for creating the SQL query. Don't choose any other columns to create the SQL query.
+        When the question is about summary report/summary of the transactions, provide the total expense corresponding to each category in descending order. When you are asked to calculate total expense, provide the sum total of all categories. When you are asked to comapre different categories, provide the result with all mentioned categories in  the appropriate order. 
+        When you are asked to provide expenses related to a certain item, group all the categories this item can fit into. For example, if you are asked to calculate expenses for food , you need to consider categories like 'food delivery','groceries' and 'restaurants and cafes'to provide answer. You are asked to give the exact SQL query in one command only in the answer. You don't need to explain about it.
         Don't append any characters/letters/words/symbols to the SQL command.
         Question:{question}
         Answer:"""

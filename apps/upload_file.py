@@ -3,24 +3,19 @@ import json
 import pandas as pd
 from dotenv import load_dotenv
 import os
-import pandasql as psql
 import sqlite3
 import shutil
 import pandas as pd
 import os
 import json
 import requests
-import gradio as gr
 import os
 import pdfplumber
 import logging
 from langchain import PromptTemplate, LLMChain
 from langchain.chat_models import ChatOpenAI
-import openai
 import re
 from langchain_community.utilities import SQLDatabase
-
-openai.api_key =os.getenv("OPENAI_API_KEY")
 
 #function to extract table from pdf
 
@@ -192,7 +187,7 @@ def find_first_match(text, categories):
 
 def classify_company(user_content):
     url = "https://api.ai71.ai/v1/chat/completions"
-    AI71_TOKEN = "api71-api-224b86a6-8cf4-466e-a26b-293f99dd5979"
+    AI71_TOKEN = os.getenv("AI71_API_KEY")
 
     categories = [
     'fitness',
