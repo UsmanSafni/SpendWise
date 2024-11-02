@@ -1,4 +1,4 @@
-# SpendWise - AI-Powered Spending Insights Chatbot
+
 # SpendWise - AI-Powered Spending Insights Chatbot
 
 ## Project Overview
