@@ -1,104 +1,94 @@
-from langchain import PromptTemplate, LLMChain
-from langchain.chat_models import ChatOpenAI
-import openai
 import os
 import re
-from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+from langchain import PromptTemplate, LLMChain
+from langchain.chat_models import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 from langchain_community.utilities import SQLDatabase
-from dotenv import load_dotenv
-load_dotenv()
 
-llm=ChatOpenAI( model="tiiuae/falcon-180B-chat",
-    api_key= os.getenv("AI71_API_KEY"),
-    base_url="https://api.ai71.ai/v1/",
-    temperature=0,
-    )
-
-
-def clean_sql_query(query):
-    # Find the first semicolon and truncate everything after it
-    cleaned_query = re.split(r';\s*', query)[0] + ';'
-    return cleaned_query.strip()
-
-
-def chatbot(user_input):
-    try:
-        # Initialize the ChatOpenAI
-        llm = ChatOpenAI(
-            model="tiiuae/falcon-180B-chat",
-            api_key=os.getenv("AI71_API_KEY"),
+class SpendWise:
+    def __init__(self, db_path="sqlite:///expenses.db", model="tiiuae/falcon-180B-chat"):
+        load_dotenv()
+        self.api_key = os.getenv("AI71_API_KEY")
+        self.db = SQLDatabase.from_uri(db_path)
+        self.llm = ChatOpenAI(
+            model=model,
+            api_key=self.api_key,
             base_url="https://api.ai71.ai/v1/",
             temperature=0,
         )
-        db = SQLDatabase.from_uri("sqlite:///expenses.db")
-        # Define the template for the prompt
-        template = """
+        self.file_mapping = {
+            "july": "bank_statement_july",
+            "august": "bank_statement_august",
+            "september": "bank_statement_sep",
+            "uploaded_file": "new_file"
+        }
+
+    @staticmethod
+    def clean_sql_query(query):
+        """Cleans the SQL query by truncating everything after the first semicolon."""
+        cleaned_query = re.split(r';\s*', query)[0] + ';'
+        return cleaned_query.strip()
+
+    def generate_sql_query(self, question, table_name):
+        """Generates a SQL query using the LLM based on the user's question."""
+        table = self.file_mapping.get(table_name)
+        if not table:
+            raise ValueError(f"Invalid table name: {table_name}")
+
+        template = f"""
         You are an intelligent MySQL chatbot and your name is SpendWise who will talk about expense history. Help the following question with a brilliant answer. Get the expense data from SQL database named 'expenses'.
-        Columns in 'expenses' table:
-        CREATE TABLE expenses (
-	          "Merchant" TEXT,
-	          "Location" TEXT,
-	          "Date" TIMESTAMP,
-	          "Amount" REAL,
-	          "Category_freetext" TEXT,
-	          "Category" TEXT
-        ) Make SQL query according to question and the different categories are 'fitness', 'groceries', 'restaurants and cafes', 'healthcare', 'clothing', 'jewelry', 'transportation', 'phone and internet', 'miscellaneous', 'others', 'e-commerce', 'food delivery'. You should focus only on 'category' column present in the table for creating the SQL query. Don't choose any other columns to create the SQL query.
-        When the question is about summary report/summary of the transactions, provide the total expense corresponding to each category in descending order. When you are asked to calculate total expense, provide the sum total of all categories. When you are asked to comapre different categories, provide the result with all mentioned categories in  the appropriate order. 
-        When you are asked to provide expenses related to a certain item, group all the categories this item can fit into. For example, if you are asked to calculate expenses for food , you need to consider categories like 'food delivery','groceries' and 'restaurants and cafes'to provide answer. You are asked to give the exact SQL query in one command only in the answer. You don't need to explain about it.
-        Don't append any characters/letters/words/symbols to the SQL command.
-        Question:{question}
+        Use the table "{table}" with these columns:
+        Merchant, Location, Date, Amount, Category_freetext, Category. 
+        Categories include: fitness, groceries, restaurants and cafes, healthcare, clothing, jewelry, transportation, phone and internet, miscellaneous, others, e-commerce, food delivery.
+        - Provide SQL queries based only on the 'Category_freetext' column.
+        - For summaries, provide the total expense for each category in descending order.
+        - For totals, calculate the sum of all categories.
+        - For comparisons, provide results for all mentioned categories in the order specified.
+        - For specific items, group all relevant categories (e.g., 'food' includes food delivery, groceries, restaurants and cafes).
+        Do not append any characters or explain the SQL query.
+        Question:{{question}}
         Answer:"""
 
-        # Create the prompt template
         prompt = PromptTemplate(template=template, input_variables=['question'])
+        llm_chain = LLMChain(prompt=prompt, llm=self.llm)
+        response = llm_chain.invoke(question)
 
-        # Initialize the LLM chain
-        llm_chain = LLMChain(prompt=prompt, llm=llm)
-
-        # Generate the response
-        response = llm_chain.invoke(user_input)
-
-        # Ensure it's a string before processing
         if isinstance(response["text"], str):
-            # Clean the generated SQL query
-            cleaned_sql_query = clean_sql_query(response["text"])
-
-            # Run the SQL query
-            if db.run(cleaned_sql_query):
-              result = db.run(cleaned_sql_query)
-              return result
-            else :
-              return "No contents to share at the moment"
+            return self.clean_sql_query(response["text"])
         else:
-            #print("The response does not contain a valid SQL string.")
-            return "No contents to share at the moment"
+            raise ValueError("Invalid response from LLM.")
 
-    except Exception as e:
-        #print(f"Error: {e}")
-        return "No contents to share at the moment"
-    
+    def execute_query(self, query):
+        """Executes a SQL query and returns the result."""
+        try:
+            result = self.db.run(query)
+            return result if result else "No contents to share at the moment."
+        except Exception as e:
+            return f"Error executing query: {e}"
 
-def generate_answer(question, result):
-    system_message = SystemMessage(content="You are an expense assistant and your name is SpendWise. Given the following user question and the corresponding SQL result, answer the user question based on the data present in SQL result and ignore what you are not provided with. If The result info appears to be an empty tuple, just say that the user has not made any expense. The currency used is AED. If you are asked to get the summary report, get the list of expenses corresponding to each category from SQL result and provide only that in the answer.You must not compute total sum at your end. If user is asking any other questions, give tricky and intelligent responses")
-    human_message = HumanMessage(content=f"""
-    Question: {question}
-    SQL Result: {result}
-    Answer:
-    """)
+    def generate_answer(self, question, result):
+        """Generates an answer using the LLM based on the SQL result."""
+        system_message = SystemMessage(content="""
+        You are an expense assistant and your name is SpendWise. Given the following user question and the corresponding SQL result, answer the user question based on the data present in SQL result and ignore what you are not provided with. If The result info appears to be an empty tuple, just say that the user has not made any expense. The currency used is AED. If you are asked to get the summary report, get the list of expenses corresponding to each category from SQL result and provide only that in the answer. You must not compute total sum at your end. If user is asking any other questions, give tricky and intelligent responses.""")
 
-    response = llm.invoke([system_message, human_message])
+        human_message = HumanMessage(content=f"""
+        Question: {question}
+        SQL Result: {result}
+        Answer:
+        """)
 
+        response = self.llm.invoke([system_message, human_message])
+        return response.content
 
-    return response.content
+    def run(self, question, table_name):
+        """Runs the complete chain to generate the final answer."""
+        sql_query = self.generate_sql_query(question, table_name)
+        result = self.execute_query(sql_query)
+        final_answer = self.generate_answer(question, result)
+        return final_answer
 
-
-def run_chain(question):
-    # Generate SQL query
-    result = chatbot({"question": question})
-
-    # Generate the final answer
-
-    final_answer = generate_answer(question, result)
-
-    return final_answer
+if __name__ == "__main__":
+    spendwise_instance = SpendWise()  # Create an instance of SpendWise
+    result = spendwise_instance.run("Total expenditure", "july")  # Call the `run` method
+    print(result)  # Print the result

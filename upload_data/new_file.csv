@@ -1,0 +1,17 @@
+,Merchant,Location,Date,Amount,Category_freetext,Category
+0,talabat,Dubai,2024-06-30,66.04,food delivery,food delivery
+1,amazon.ae,Dubai,2024-07-01,175.25,e-commerce,e-commerce
+2,union coop,Dubai,2024-07-01,5.5,groceries,groceries
+3,carrefour,Dubai,2024-07-02,48.75,groceries,groceries
+4,spinneys,Dubai,2024-07-04,33.2,groceries,groceries
+5,zomato,Dubai,2024-07-05,92.4,restaurants and cafes,restaurants and cafes
+6,mall parking,Dubai,2024-07-06,20.0,miscellaneous,miscellaneous
+7,ikea,Dubai,2024-07-08,120.55,furniture,
+8,lulu hypermarket,Dubai,2024-07-10,87.9,groceries,groceries
+9,starbucks,Dubai,2024-07-13,15.0,restaurants and cafes,restaurants and cafes
+10,emirates airline,Dubai,2024-07-15,350.0,transportation,transportation
+11,jumeirah beach hotel,Dubai,2024-07-18,200.0,hotels,
+12,al zahra restaurant,Dubai,2024-07-20,75.4,restaurants and cafes,restaurants and cafes
+13,du mobile recharge,Dubai,2024-07-22,50.0,phone and internet,phone and internet
+14,h&m,Dubai,2024-07-25,98.0,clothing,clothing
+15,duty free,Dubai,2024-07-28,210.0,miscellaneous,miscellaneous

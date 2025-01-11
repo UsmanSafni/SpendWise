@@ -7,3 +7,6 @@ langchain-community
 langchain-openai
 gradio
 pdfplumber
+matplotlib
+seaborn
+plotly
