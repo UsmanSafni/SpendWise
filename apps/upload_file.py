@@ -258,3 +258,4 @@ class PDFProcessor:
 if __name__ == "__main__":
     processor = PDFProcessor()
     processor.upload_file("./data/bank_statement_july.pdf")
+    

@@ -1,17 +1,17 @@
 ,Merchant,Location,Date,Amount,Category_freetext,Category
-0,talabat,Dubai,2024-06-30,66.04,food delivery,food delivery
-1,amazon.ae,Dubai,2024-07-01,175.25,e-commerce,e-commerce
-2,union coop,Dubai,2024-07-01,5.5,groceries,groceries
-3,carrefour,Dubai,2024-07-02,48.75,groceries,groceries
-4,spinneys,Dubai,2024-07-04,33.2,groceries,groceries
-5,zomato,Dubai,2024-07-05,92.4,restaurants and cafes,restaurants and cafes
-6,mall parking,Dubai,2024-07-06,20.0,miscellaneous,miscellaneous
-7,ikea,Dubai,2024-07-08,120.55,furniture,
-8,lulu hypermarket,Dubai,2024-07-10,87.9,groceries,groceries
-9,starbucks,Dubai,2024-07-13,15.0,restaurants and cafes,restaurants and cafes
-10,emirates airline,Dubai,2024-07-15,350.0,transportation,transportation
-11,jumeirah beach hotel,Dubai,2024-07-18,200.0,hotels,
-12,al zahra restaurant,Dubai,2024-07-20,75.4,restaurants and cafes,restaurants and cafes
-13,du mobile recharge,Dubai,2024-07-22,50.0,phone and internet,phone and internet
-14,h&m,Dubai,2024-07-25,98.0,clothing,clothing
-15,duty free,Dubai,2024-07-28,210.0,miscellaneous,miscellaneous
+0,talabat,Dubai,6/30/2024,66.04,food delivery,food delivery
+1,noon.ae,Dubai,7/1/2024,195.25,e-commerce,e-commerce
+2,union coop,Dubai,7/1/2024,5.5,groceries,groceries
+3,carrefour,Dubai,7/2/2024,48.75,groceries,groceries
+4,spinneys,Dubai,7/4/2024,33.2,groceries,groceries
+5,talabat,Dubai,7/5/2024,104,restaurants and cafes,restaurants and cafes
+6,mall parking,Dubai,7/6/2024,20,miscellaneous,miscellaneous
+7,danube,Dubai,7/8/2024,420.55,furniture,furniture
+8,lulu hypermarket,Dubai,7/10/2024,87.9,groceries,groceries
+9,starbucks,Dubai,7/13/2024,15,restaurants and cafes,restaurants and cafes
+10,ferrari world,Abu Dhabi,7/15/2024,420,entertainment,entertainment
+11,jumeirah beach hotel,Dubai,7/18/2024,200,hotels,hotels
+12,al zahra restaurant,Dubai,7/20/2024,75.4,restaurants and cafes,restaurants and cafes
+13,du mobile recharge,Dubai,7/22/2024,90,phone and internet,phone and internet
+14,h&m,Dubai,7/25/2024,98,clothing,clothing
+15,duty free,Dubai,7/28/2024,210,miscellaneous,miscellaneous

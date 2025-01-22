@@ -92,7 +92,7 @@ class PlotGenerator:
 
         # Plot 5: Average Daily Spending
         daily_totals = data.groupby('Date')['Amount'].sum()
-        average_daily_spent = daily_totals.mean()
+        average_daily_spent = daily_totals.sum()/30
         fig.add_trace(
             go.Indicator(
                 mode="number",

@@ -19,13 +19,12 @@ SpendWise is an interactive application designed to help users analyze and track
 
 3. **Custom LLM Integration**:
    - Utilizes the `tiiuae/falcon-180B-chat` model for enhanced conversational capabilities.
-   - Powered by `LangChain` and `ChatOpenAI` for seamless NLP operations.
+   - Powered by `LangChain` for seamless NLP operations.
 
 ## Installation
 
 ### Prerequisites
 - Python 3.8 or higher.
-- Required Python libraries: `gradio`, `openai`, `langchain_openai`, and others.
 
 ### Setup
 1. Clone this repository:
@@ -35,25 +34,14 @@ SpendWise is an interactive application designed to help users analyze and track
    ```
 
 2. Create and activate a virtual environment:
-   ```bash
-   python -m venv myenv
-   source myenv/bin/activate  # On Windows: myenv\Scripts\activate
-   ```
-
+  
 3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
 4. Set up the environment variables:
-   - Add your API key to the environment:
-     ```bash
-     export AI71_API_KEY=your_api_key_here
-     ```
-   - On Windows, use:
-     ```cmd
-     set AI71_API_KEY=your_api_key_here
-     ```
+
 
 5. Run the app:
    ```bash
@@ -86,24 +74,9 @@ SpendWise is an interactive application designed to help users analyze and track
 └── README.md             # Project documentation
 ```
 
-## Requirements
 
-- `gradio`
-- `openai`
-- `langchain_openai`
-- `os`
 
-## Future Enhancements
 
-- Support for additional file types.
-- Advanced analytics and reporting.
-- Voice-based chatbot interactions.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-### Developed By
-[Your Name](https://github.com/your-profile) - SpendWise Team
+### Demo
+[SpendWise](https://huggingface.co/spaces/Safni/spendwise_v2)
